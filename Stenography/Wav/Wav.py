@@ -3,13 +3,8 @@ Created on Apr 23, 2016
 
 @author: emanuel
 '''
-import wave
-import math
 import numpy as np
 import scipy.io.wavfile as wav
-from setuptools.command.build_ext import if_dl
-from reportlab.lib.pagesizes import LETTER
-from __builtin__ import input
 
 class Wav(object):
     '''
@@ -67,7 +62,6 @@ class Wav(object):
     
         
     def manipulate(self, value, lsb):
-        print value
         binValue = bin(value)
         strValue = str(binValue)
         strValue2 = strValue[:len(strValue)-1] + str(lsb)

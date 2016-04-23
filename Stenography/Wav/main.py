@@ -7,14 +7,18 @@ import Wav
 import warnings
 
 def main():
+    print bin(ord("t"))
     warnings.simplefilter("ignore")
     wav = Wav.Wav()
-    message = "Hallo Welt, was geht denn so bei euch?"
+    sourceURL = '/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2.wav'
+    targetURL = '/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav'
+    message = raw_input("Nachrricht eingeben: ")
+    
     message = wav.strToBin(message)
-    wav.hide(message)
-    extractedMessage = wav.extract()
-    print extractedMessage
-    print "Die Message lautet: " +wav.binToStr(extractedMessage)
+    wav.hide(targetURL=targetURL, sourceURL=sourceURL, message=message)
+    extractedMessage = wav.extract(targetURL=targetURL)
+    
+    print "Die Nachrricht lautet: " +wav.binToStr(extractedMessage)
 
 if __name__ == '__main__':
     main()

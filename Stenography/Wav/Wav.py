@@ -15,39 +15,37 @@ class Wav(object):
     def __init__(self, *params):
         pass
 
-    def hide(self, message):
-        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2.wav')
+    def hide(self, sourceURL, targetURL, message):
+        rate, data = wav.read(sourceURL)
         newData = np.copy(data)
                 
         for i in range(len(message)):
-            newData[i][0] = message[i]
-
+            newData[i][0] = self.manipulate(newData[i][0], message[i])
         
-        wav.write('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav', rate, newData)
+        wav.write(targetURL, rate, newData)
             
             
     
-    def extract(self):        
-        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav')
+    def extract(self, targetURL):        
+        rate, data = wav.read(targetURL)
         anzNuller = 0
         message = []
         strValue = ""
-        i = 0
-        while (anzNuller < 16):
-            strValue = str(bin(data[i][0]))
-            if strValue[len(strValue) - 1] == "0":
-                anzNuller += 1
-            else:
-                anzNuller = 0
-            message.append(int(strValue[len(strValue) - 1]))
-            i += 1
-            
-        return message[:len(message) - 16]
+        j = 0
+        while (strValue != "0000000"):
+            strValue = ""
+            for i in range(7):
+                char = str(bin(data[j + i][0]))
+                char = char[len(char) - 1: len(char)]
+                strValue += char
+                message.append(char)
+            j += 7
+        return message[:len(message) - 7]
     
     
-    def read(self):
-        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2.wav')
-        rate2, data2 = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav')
+    def read(self, sourceURL, targetURL):
+        rate, data = wav.read(sourceURL)
+        rate2, data2 = wav.read(targetURL)
         for i in range(100):
             print "~~~~~"
             print str(data[i])
@@ -86,7 +84,7 @@ class Wav(object):
                 strBin = "0" + strBin
             for j in strBin:
                 message.append(int(j))
-        for i in range(16):
+        for i in range(9):
             message.append(0)
         return message
     

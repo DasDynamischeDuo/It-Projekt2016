@@ -16,45 +16,38 @@ class Wav(object):
         pass
 
     def hide(self, message):
-        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall1.wav')
-        newData = []
+        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2.wav')
+        newData = np.copy(data)
                 
         for i in range(len(message)):
-            newData.append(self.manipulate(data[i], message[i]))
-            
-        for i in range(len(data)):
-            if i < len(message):
-                pass
-            else:
-                newData.append(data[i])
+            newData[i][0] = message[i]
 
-        newData = np.asarray(newData, dtype=np.int16)
-
-        wav.write('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall1new.wav', rate, newData)
+        
+        wav.write('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav', rate, newData)
             
             
     
     def extract(self):        
-        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall1new.wav')
-        anzEinser = 0
+        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav')
+        anzNuller = 0
         message = []
         strValue = ""
         i = 0
-        while (anzEinser < 8):
-            strValue = str(bin(data[i]))
-            if strValue[len(strValue) - 1] == "1":
-                anzEinser += 1
+        while (anzNuller < 16):
+            strValue = str(bin(data[i][0]))
+            if strValue[len(strValue) - 1] == "0":
+                anzNuller += 1
             else:
-                anzEinser = 0
+                anzNuller = 0
             message.append(int(strValue[len(strValue) - 1]))
             i += 1
             
-        return message[:len(message) - 8]
+        return message[:len(message) - 16]
     
     
     def read(self):
-        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall1.wav')
-        rate2, data2 = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall1new.wav')
+        rate, data = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2.wav')
+        rate2, data2 = wav.read('/home/emanuel/git/It-Projekt2016/Stenography/Sounds/waterfall2new.wav')
         for i in range(100):
             print "~~~~~"
             print str(data[i])
@@ -93,8 +86,8 @@ class Wav(object):
                 strBin = "0" + strBin
             for j in strBin:
                 message.append(int(j))
-        for i in range(8):
-            message.append(1)
+        for i in range(16):
+            message.append(0)
         return message
     
     def binToStr(self, input):

@@ -80,7 +80,8 @@ public class Audiostream implements Runnable{
 			BufferedReader br = new BufferedReader(fr);
 
 			
-			/*
+			
+			String line;
 			while ((line = br.readLine()) != null) {
 				
 				for (int i = 0; i < line.length(); i++) {
@@ -90,7 +91,7 @@ public class Audiostream implements Runnable{
 				System.out.println();
 				
 			};
-			*/
+			
 			
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(wavFile);
 					

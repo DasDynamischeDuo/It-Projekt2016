@@ -25,7 +25,7 @@ public class TwitterLogin {
 		Twitter twitter = tf.getInstance();
 		
 		//tweetStatus(tf, twitter);
-		search(tf, twitter);
+		getTweetandMediafromHash(tf, twitter);
 		
 		
 		
@@ -48,7 +48,7 @@ public class TwitterLogin {
 		    System.out.println("Successfully updated the status to [" + status.getText() + "].");
 	}
 	
-	private static void search(TwitterFactory tf, Twitter twitter) {
+	private static void getTweetandMediafromHash(TwitterFactory tf, Twitter twitter) {
 
 		tf.getSingleton();
 		Query query = new Query("meinpersoehnlicherHash");
@@ -60,9 +60,12 @@ public class TwitterLogin {
 			e.printStackTrace();
 		}
 		for (Status status : result.getTweets()) {
-			System.out.println("@" + status.getUser().getScreenName() + " : " + status.getText() + " : "
-					+ status.getGeoLocation());
+			System.out.println("@" + status.getUser().getScreenName() + " : " + status.getText());
+			for (MediaEntity mediaEntity : status.getMediaEntities()) {
+		        System.out.println(mediaEntity.getType() + ": " + mediaEntity.getMediaURL());
+		    }
 		}
+		
 
 	}
 	

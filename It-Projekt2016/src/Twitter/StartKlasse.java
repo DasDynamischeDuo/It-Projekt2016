@@ -1,6 +1,7 @@
 package Twitter;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 public class StartKlasse {
 
@@ -22,7 +23,11 @@ public class StartKlasse {
 		}
 		
 		
-		
+		try {
+			s.deleteImage();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

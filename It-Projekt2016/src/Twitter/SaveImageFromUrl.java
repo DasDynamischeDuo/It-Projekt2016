@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SaveImageFromUrl {
 	
@@ -38,13 +41,15 @@ public class SaveImageFromUrl {
 	
 	public static void deleteImage() throws MalformedURLException{
 		
-		String[]entries = index.list();
-		for(String s: entries){
-		    File currentFile = new File(index.getPath(),s);
-		    currentFile.delete();
+		Path p = Paths.get(destinationFile);
+		
+		try {
+			Files.delete(p);
+		} catch (Exception e) {
+			
 		}
 		
-		
+		System.out.println("deleted");
 	}
 
 }

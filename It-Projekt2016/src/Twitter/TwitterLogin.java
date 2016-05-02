@@ -5,16 +5,21 @@ import twitter4j.conf.*;
 
 public class TwitterLogin {
 
-	static String ConsumerKey = "fryDhzHTK7dOomLWgQkFx2AyQ";
-	static String ConsumerSecret = "xbc0ad7wivaxs0QS1V2T1INlqxXWHg1aSu73IyoeB5qgHI5ylG";
-	static String AccesToken = "2387628402-oVhA0NDOD4ZwWVBeI07Uo4SEFly4aqhKdS1TCze";
-	static String AccesTokenSecret = "pF7o4Z1fkEn4BHALI3MzonbxKffnLDNtHpBDFLpCc0iQ9";
+	private static String ConsumerKey = "fryDhzHTK7dOomLWgQkFx2AyQ";
+	private static String ConsumerSecret = "xbc0ad7wivaxs0QS1V2T1INlqxXWHg1aSu73IyoeB5qgHI5ylG";
+	private static String AccesToken = "2387628402-oVhA0NDOD4ZwWVBeI07Uo4SEFly4aqhKdS1TCze";
+	private static String AccesTokenSecret = "pF7o4Z1fkEn4BHALI3MzonbxKffnLDNtHpBDFLpCc0iQ9";
 
-	static TwitterFactory tf;
-	static Twitter twitter;
+	private static TwitterFactory tf;
+	private static Twitter twitter;
 
 	public TwitterLogin() {
 
+		reConfiguration();
+
+	}
+
+	public void reConfiguration() {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
 			.setOAuthConsumerKey(ConsumerKey)
@@ -23,7 +28,6 @@ public class TwitterLogin {
 			.setOAuthAccessTokenSecret(AccesTokenSecret);
 		tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
-
 	}
 
 	public static void tweetStatus(String tweet) {
@@ -59,6 +63,28 @@ public class TwitterLogin {
 
 		return returnvalue;
 
+	}
+	
+
+	public static void setConsumerKey(String consumerKey) {
+		ConsumerKey = consumerKey;
+	}
+	
+	
+
+	public static void setConsumerSecret(String consumerSecret) {
+		ConsumerSecret = consumerSecret;
+	}
+	
+	
+
+	public static void setAccesToken(String accesToken) {
+		AccesToken = accesToken;
+	}
+	
+
+	public static void setAccesTokenSecret(String accesTokenSecret) {
+		AccesTokenSecret = accesTokenSecret;
 	}
 
 }

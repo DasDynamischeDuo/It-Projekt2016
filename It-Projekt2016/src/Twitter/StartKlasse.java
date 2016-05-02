@@ -9,17 +9,21 @@ public class StartKlasse {
 		TwitterLogin tl = new TwitterLogin();
 		SaveImageFromUrl s = new SaveImageFromUrl();
 		
-		String Str = new String();
+		String str;
 		
+		str = tl.getTweetandMediafromHash();
+		
+		System.out.println("Hier: " +str);
 		
 		try {
-			s.saveImage(Str);
+			s.saveImage(str);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-
+		
+		
+		
 	}
 
 }

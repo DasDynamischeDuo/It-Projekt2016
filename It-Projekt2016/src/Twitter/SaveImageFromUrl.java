@@ -10,7 +10,7 @@ import java.net.URL;
 
 public class SaveImageFromUrl {
 	
-	private String imageUrl = "http://pbs.twimg.com/media/ChYaSWoWwAIGjms.jpg";
+	
 	private static String destinationFile = "images/image.jpg";
 	private static File index = new File("/images");
 	

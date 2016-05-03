@@ -22,13 +22,13 @@ public class StartKlasse {
 			e.printStackTrace();
 		}
 		
-		
+		/*
 		try {
 			s.deleteImage();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
+		*/
 	}
 
 }

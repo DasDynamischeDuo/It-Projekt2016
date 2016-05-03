@@ -6,6 +6,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * Die GUI des Staganographieprogramms
+ *  * 
+ * @author Fabian
+ *
+ */
+
 public class Gui extends JFrame {
 	
 	private JPanel contentpane,stegopane,vorschaupane,twitterpane;
@@ -40,6 +47,11 @@ public class Gui extends JFrame {
 	private JMenu menu;
 	private JMenuItem menuItem;
 	
+	/**
+	 * Der Konstruktor der Gui
+	 * 
+	 * @author Fabian
+	 */
 	
 	
 	public Gui(){

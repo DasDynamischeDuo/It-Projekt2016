@@ -21,11 +21,10 @@ public class TwitterLogin {
 
 	public void reConfiguration() {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-			.setOAuthConsumerKey(ConsumerKey)
-			.setOAuthConsumerSecret(ConsumerSecret)
-			.setOAuthAccessToken(AccesToken)
-			.setOAuthAccessTokenSecret(AccesTokenSecret);
+		cb.setDebugEnabled(true).setOAuthConsumerKey(ConsumerKey)
+								.setOAuthConsumerSecret(ConsumerSecret)
+								.setOAuthAccessToken(AccesToken)
+								.setOAuthAccessTokenSecret(AccesTokenSecret);
 		tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}
@@ -64,24 +63,18 @@ public class TwitterLogin {
 		return returnvalue;
 
 	}
-	
 
 	public static void setConsumerKey(String consumerKey) {
 		ConsumerKey = consumerKey;
 	}
-	
-	
 
 	public static void setConsumerSecret(String consumerSecret) {
 		ConsumerSecret = consumerSecret;
 	}
-	
-	
 
 	public static void setAccesToken(String accesToken) {
 		AccesToken = accesToken;
 	}
-	
 
 	public static void setAccesTokenSecret(String accesTokenSecret) {
 		AccesTokenSecret = accesTokenSecret;

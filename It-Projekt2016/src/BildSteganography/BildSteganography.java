@@ -23,7 +23,7 @@ public class BildSteganography {
 
 	}
 
-	public void hideText(String text, File img) throws IOException {
+	public BufferedImage hideText(String text, File img) throws IOException {
 
 		BufferedImage bufferedImage = ImageIO.read(img);
 		int w = bufferedImage.getWidth();
@@ -46,7 +46,7 @@ public class BildSteganography {
 			}
 		}
 
-		ImageIO.write(bufferedImage, "png", img);
+		return bufferedImage;
 
 	}
 

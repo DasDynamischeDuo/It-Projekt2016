@@ -1,36 +1,41 @@
 package BildSteganography;
 
+import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+
+import sun.misc.FpUtils;
 
 public class Startklasse {
 
 	public static void main(String[] args) {
 		
-		BildSteganography bildSteganography = null;
-
+		BildSteganography bildSteganography = new BildSteganography();
+		URI uri = null;
 		try {
-			bildSteganography = new BildSteganography();
-		} catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		int[] pixel = bildSteganography.readImage();
-		try {
-			bildSteganography.writeImage(pixel);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			uri = BildSteganography.class.getResource("/Pictures/CuteChick.jpg").toURI();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		File img = new File(uri);
+		try {
+			int[] pixel = bildSteganography.readImage(img);
+			bildSteganography.hideText("test", img);
+			String text = bildSteganography.extractText(img);
+			System.out.println(text);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		
+
 	}
 	
 	

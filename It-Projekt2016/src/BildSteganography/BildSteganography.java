@@ -23,6 +23,7 @@ public class BildSteganography {
 
 	}
 
+
 	public void hideText(String text, File img) throws IOException {
 
 		BufferedImage bufferedImage = ImageIO.read(img);
@@ -46,7 +47,33 @@ public class BildSteganography {
 			}
 		}
 
-		ImageIO.write(bufferedImage, "png", img);
+		ImageIO.write(bufferedImage, "png", img);}
+
+	public BufferedImage hideText1(String text, File img) throws IOException {
+
+		BufferedImage bufferedImage = ImageIO.read(img);
+		int w = bufferedImage.getWidth();
+		int h = bufferedImage.getHeight();
+
+		int stelle = 0;
+
+		int[] textBits = new int[text.length() + 7];
+		textBits = bitsInText(text);
+
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
+				if (textBits.length <= stelle) {
+					break;
+				}
+
+				bufferedImage.setRGB(j, i, setLastBit(bufferedImage.getRGB(j, i), textBits[stelle]));
+				stelle++;
+
+			}
+		}
+
+		return bufferedImage;
+
 
 	}
 

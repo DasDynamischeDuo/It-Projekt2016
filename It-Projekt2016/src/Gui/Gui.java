@@ -1,6 +1,7 @@
 package Gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -21,20 +22,26 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import com.sun.org.apache.bcel.internal.generic.LMUL;
 
 import BildSteganography.BildSteganography;
+import Twitter.TwitterLogin;
 
-import sun.tools.jar.JarImageSource;
+
 
 public class Gui extends JFrame{
 
+	//VorschauStego
 	private JPanel contentpane;
 	private JPanel pHide;
 	private JPanel pExtract;
 	private JPanel pMessage;
+	
 	private JPanel pBildIn;
 	private JPanel pBildOut;
+	
 	private JPanel pButton;
 	private JPanel pButtonSteno;
+	
 	private JTextField tfMessage;
+	
 	private JButton bBildInLaden;
 	private JButton bBildOutLaden;
 	private JButton bHide;
@@ -44,11 +51,21 @@ public class Gui extends JFrame{
 	private URI uri;
 	private File imgIn;
 	private File imgOut;
+	private File twitterImage;
 	private BufferedImage bufferedImgIn;
 	private BufferedImage bufferedImgOut;
-	
+
 	private ImageIcon iconIn;
 	private ImageIcon iconOut;
+	
+	//Twitter
+	private JPanel pTwitterLogin,pTwitterButtons,pTwitterSonst;
+	
+	private JButton btTwitterLogin,btTwitterSuche,btTweet,btTweetBild;
+	
+	private JTextField txtHash,txtTweet;
+	private JLabel lHash;
+	
 	
 	
 	public Gui() throws IOException, URISyntaxException {
@@ -57,6 +74,8 @@ public class Gui extends JFrame{
 		initBild();
 		init();
 		actionListener();
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setSize(new Dimension(1200,700));
 		
 	}
 
@@ -162,12 +181,75 @@ public class Gui extends JFrame{
 				
 			}
 		});
+		btTwitterLogin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btTwitterLoginClicked();
+				
+			}
+		});
+		
+		btTwitterSuche.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btTwitterSucheClicked();
+				
+			}
+		});
+		btTweet.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btTweetClicked();
+				
+			}
+		});
+		
+		btTweetBild.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				int returnVal = chooser.showOpenDialog(null);
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					uri = chooser.getSelectedFile().toURI();
+				}
+				    
+				twitterImage = new File(uri);
+				System.out.println(twitterImage);
+				TwitterLogin.tweetImage(twitterImage);
+				
+			}
+		});
 		
 		
 	}
 
+	private void btTweetClicked() {
+		
+		TwitterLogin.tweetStatus(txtTweet.getText());
+		
+	}
+
+	private void btTwitterSucheClicked() {
+		
+		TwitterLogin.getTweetandMediafromHash(txtHash.getText());
+		
+	}
+
+	private void btTwitterLoginClicked() {
+		
+		Login l = new Login();
+		l.setVisible(true);
+		
+	}
+
 	private void init() {
-		contentpane = new JPanel(new BorderLayout());
+		
+		//OberesPanel
+		contentpane = new JPanel(new GridLayout(2,3));
 		pHide = new JPanel();
 		pButton = new JPanel(new BorderLayout());
 		pExtract = new JPanel();
@@ -184,23 +266,55 @@ public class Gui extends JFrame{
 		bBildInLaden.setBorder(BorderFactory.createEmptyBorder());
 		bBildOutLaden.setBorder(BorderFactory.createEmptyBorder());
 		
+		//Unteres Panel
+		
+		pTwitterLogin = new JPanel();
+		pTwitterButtons = new JPanel();
+		pTwitterSonst = new JPanel();
+		
+		btTwitterLogin = new JButton("Login Twitter");
+		btTwitterSuche = new JButton("Suche");
+		btTweet = new JButton("Tweet");
+		btTweetBild = new JButton("TweeteBild");
+		
+		txtHash = new JTextField(25);
+		
+		txtTweet = new JTextField(25);
+		
+		lHash = new JLabel("Hashtag");
+		
+		
 		
 		this.setContentPane(contentpane);
-		contentpane.add(pHide, BorderLayout.WEST);
-		contentpane.add(pButton, BorderLayout.CENTER);
-		contentpane.add(pExtract, BorderLayout.EAST);
+		contentpane.add(pHide);
+		contentpane.add(pButton);
+		contentpane.add(pExtract);
+		contentpane.add(pTwitterLogin);
+		contentpane.add(pTwitterButtons);
+		contentpane.add(pTwitterSonst);
+		
+		//UnteresPanel
+		pTwitterLogin.add(btTwitterLogin,BorderLayout.CENTER);
+		
+		pTwitterButtons.add(lHash,BorderLayout.WEST);
+		pTwitterButtons.add(txtHash,BorderLayout.EAST);
+		pTwitterButtons.add(btTwitterSuche,BorderLayout.SOUTH);
+		
+		pTwitterSonst.add(btTweet);
+		pTwitterSonst.add(txtTweet);
+		pTwitterSonst.add(btTweetBild);
 		
 		
+		
+		
+		
+		//OberesPanel
 		pButtonSteno.add(bHide, BorderLayout.WEST);
 		pButtonSteno.add(bExtract, BorderLayout.EAST);
 		pButton.add(pButtonSteno, BorderLayout.NORTH);
 		pButton.add(tfMessage, BorderLayout.SOUTH);
-		
 		pBildIn.add(bBildInLaden);
-		
-		pHide.add(pMessage, BorderLayout.NORTH);
 		pHide.add(pBildIn, BorderLayout.CENTER);
-		
 		pExtract.add(bBildOutLaden);
 		
 	}

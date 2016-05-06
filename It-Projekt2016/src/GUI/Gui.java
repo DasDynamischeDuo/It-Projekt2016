@@ -3,221 +3,196 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+
+
+
 /**
- * Die GUI des Staganographieprogramms
- *  * 
+ * Die GUI des Staganographieprogramms *
+ * 
  * @author Fabian
  *
  */
 
 public class Gui extends JFrame {
 	
-	private JPanel contentpane,stegopane,vorschaupane,twitterpane;
+
+
+	private JPanel contentpane, stegopane, twitterpane;
+
+	private JPanel stegoButtonpane;
+
+	private JPanel twitterButtonpane1, twitterButtonpane2;
+
+	// Buttons
+	private JButton btVerstecken, btEntstecken, btTwitterLogin, btTwitterSuche, btTwittertweet, btTwitterBild;
+	private JTextField txtStego, txtHash, txtUser;
+	private JLabel lHash, lUser;
+
+	// BildButtons
+	private JButton btBild1, btBild2;
+
+	private ImageIcon iconIn;
+	private ImageIcon iconOut;
 	
-	//Komponenten der Stegopane
-	private JPanel bildpane;
-	private JPanel bildBtPane1, bildTxtPane, bildBtPane2, bildLabelPane;
+	private Image image1,image2;
 	
-	private JButton btBildVerS, btBildEntS;
-	private JLabel lBild;
-	private String sLabelBild = "leer";
+	private String uri;
+
 	
-	private JTextField txtBild;
-	
-	//Komponenten der Vorschaupane
-	private JPanel vorschauBild;
-	private JLabel bild;
-	private JButton btVorschauBild;
-		
-	private Image image;
-	private ImageIcon icon;
-	
-	//Komponenten der Twitterpane
-	private JPanel twitterVerbindungsPane, twitterArbeitsPane;
-	private JPanel twitterBtPane, twitterTxtPane, twitterBtPane2, twitterTxtPane2,twitterBtVerbindungsPane;
-	
-	private JButton btTwitterLogin, btTwitterSucheHash, btTwitterPosteTweet;
-	private JTextField txtTwitterHash,txtTwitterTweet;
-	
-	
-	
-	//Komponenten der Menubar
+
+	// Komponenten der Menubar
 	private JMenuBar menuBar;
 	private JMenu menu;
 	private JMenuItem menuItem;
-	
+
 	/**
 	 * Der Konstruktor der Gui
 	 * 
 	 * @author Fabian
+	 * @throws URISyntaxException 
+	 * @throws IOException 
 	 */
-	
-	
-	public Gui(){
-		
-		
+
+	public Gui() throws IOException, URISyntaxException {
+
 		VorschauBildLaden();
 		init();
+		
 		zuordnung();
 		ButtonActionListener();
-		
-		
+
 		this.setJMenuBar(menuBar);
 		this.setTitle("Stego");
 		this.setSize(1300, 800);
 		this.setContentPane(contentpane);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
-	
-		
-		
+
 	}
 
-	
 	private void ButtonActionListener() {
-		
+
 		btTwitterLogin.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				btTwitterLoginClicked();
-				
+
 			}
 		});
 		
+		btBild1.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser chooser = new JFileChooser();
+			    int returnVal = chooser.showOpenDialog(null);
+			    if(returnVal == JFileChooser.APPROVE_OPTION) {
+			            uri = chooser.getSelectedFile().toString();
+			    }
+			    
+			    try {
+					image1 = ImageIO.read(getClass().getResource(uri));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				iconIn = new ImageIcon(image1);
+				iconIn.setImage(iconIn.getImage().getScaledInstance(400, 300, Image.SCALE_DEFAULT));
+				btBild1.setIcon(iconIn);
+				
+			}
+		});
+
 	}
 
 	private void btTwitterLoginClicked() {
-		
+
 		Login l = new Login();
 		l.setVisible(true);
-		
+
 	}
 
 	private void zuordnung() {
-		
-		//Zuordnung Stegopane
-		bildBtPane1.add(btBildVerS);
-		bildTxtPane.add(txtBild);
-		bildBtPane2.add(btBildEntS);
-		bildLabelPane.add(lBild);
-				
-		bildpane.add(bildBtPane1);
-		bildpane.add(bildTxtPane);
-		bildpane.add(bildBtPane2);
-		bildpane.add(bildLabelPane);
-		
-		
-		//Zuordnung Vorsschau
-		vorschauBild.add(bild);
-		vorschauBild.add(btVorschauBild,BorderLayout.SOUTH);
-		vorschaupane.add(vorschauBild);
-		
-		
-		//Zuordnung Twitter
-		twitterBtVerbindungsPane.add(btTwitterLogin,BorderLayout.CENTER);
-		twitterVerbindungsPane.add(twitterBtVerbindungsPane);
-		
-		twitterBtPane.add(btTwitterSucheHash);
-		twitterTxtPane.add(txtTwitterHash);
-		twitterBtPane2.add(btTwitterPosteTweet);
-		twitterTxtPane2.add(txtTwitterTweet);
-		
-		twitterArbeitsPane.add(twitterBtPane);
-		twitterArbeitsPane.add(twitterTxtPane);
-		twitterArbeitsPane.add(twitterBtPane2);
-		twitterArbeitsPane.add(twitterTxtPane2);
-		
-		
-		
-		twitterpane.add(twitterVerbindungsPane);
-		twitterpane.add(twitterArbeitsPane);
-		
-		stegopane.add(bildpane);
-		stegopane.add(vorschaupane);
-		
+
+		stegopane.add(btBild1);
+		stegopane.add(stegoButtonpane);
+		stegopane.add(btBild2);
+
+		twitterpane.add(btTwitterLogin);
+		twitterpane.add(twitterButtonpane1);
+		twitterpane.add(twitterButtonpane2);
+
 		menu.add(menuItem);
 		menuBar.add(menu);
-		
+
 		contentpane.add(stegopane);
 		contentpane.add(twitterpane);
-		
+
 	}
 
 	private void init() {
 		
+		iconIn = new ImageIcon(image1);
+		iconOut = new ImageIcon(image2);
 		
-		contentpane = new JPanel(new GridLayout(1,2));
-		stegopane = new JPanel();
-		stegopane.setLayout(new GridLayout(2,1));
-		vorschaupane = new JPanel(new GridLayout(1,2));
-		twitterpane = new JPanel(new GridLayout(2,1));
+		//Labels
+		lHash = new JLabel("Hash");
+		lUser = new JLabel("User");
 		
+		//Textfelder
+		txtStego = new JTextField(25);
+		txtHash = new JTextField(25);
+		txtUser = new JTextField(25);
 		
-		//Komponenten der Stegopane
-		bildpane = new JPanel(new GridLayout(4,1));
+		//Buttons
+		btVerstecken = new JButton("Verstecken");
+		btEntstecken = new JButton("Entstecken");
+		btTwitterLogin = new JButton("Twitter Login");
+		btTwitterSuche = new JButton("Suche");
+		btTwittertweet = new JButton("Tweete Nachricht");
+		btTwitterBild = new JButton("Tweete Bild");
 		
-		bildBtPane1 = new JPanel();
-		bildBtPane2 = new JPanel();
-		bildTxtPane = new JPanel();
-		bildLabelPane = new JPanel();
-		btBildVerS = new JButton("Bild verschlüsseln");
-		btBildEntS = new JButton("Bild entschlüsseln");
+		btBild1 = new JButton(iconIn);
+		btBild2 = new JButton(iconOut);
 		
+		//Überkomponenten
+		contentpane = new JPanel(new GridLayout(2,1));
+		stegopane = new JPanel(new GridLayout(1,3));
+		twitterpane = new JPanel(new GridLayout(1,3));
 		
+		stegoButtonpane = new JPanel(new GridLayout(3,1));
 		
-		lBild = new JLabel(sLabelBild);
-		
-		
-		txtBild = new JTextField(25);
-		
-		//Komponenten der Vorschau
-		vorschauBild = new JPanel();
-		
-		btVorschauBild = new JButton("Bild Laden");
-		
-		icon = new ImageIcon(image);
-		icon.setImage(icon.getImage().getScaledInstance(400, 300, Image.SCALE_DEFAULT));
-		bild =  new JLabel(icon);
-		
-		//Komponenten der Twitterpane
-		twitterVerbindungsPane = new JPanel();
-		twitterArbeitsPane = new JPanel(new GridLayout(4,1));
-		
-		twitterBtVerbindungsPane = new JPanel();
-		twitterBtPane = new JPanel();
-		twitterBtPane2 = new JPanel();
-		twitterTxtPane = new JPanel();
-		twitterTxtPane2 = new JPanel();
-		
-		btTwitterLogin = new JButton("Mit Twitter verbinden");
-		btTwitterLogin.setSize(200, 50);
-		btTwitterSucheHash = new JButton("Suche nach Hash");
-		btTwitterPosteTweet = new JButton("Tweete");
-		
-		txtTwitterHash = new JTextField(25);
-		txtTwitterTweet = new JTextField(25);
-		
-		
-		
-		
-		//Komponenten der Menubar
+		twitterButtonpane1 = new JPanel(new GridLayout(2,2));
+		twitterButtonpane2 = new JPanel(new GridLayout(3,1));
+
+		// Komponenten der Menubar
 		menuBar = new JMenuBar();
 		menu = new JMenu("Hilfe");
 		menuItem = new JMenuItem("Item");
-		
+
 	}
 	
 	private void VorschauBildLaden(){
 		
 		try {
-			image = ImageIO.read(getClass().getResource("image.jpg"));
+			image1 = ImageIO.read(getClass().getResource("image.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			image2 = ImageIO.read(getClass().getResource("image.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -227,30 +202,6 @@ public class Gui extends JFrame {
 		
 	}
 	
-	protected void paintComponent(Graphics g) {
-	      super.paintComponents(g);
-	      if(image != null) {
-	         g.drawImage(image, 0, 0, this);
-	      }
-	   }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
-}
+	}

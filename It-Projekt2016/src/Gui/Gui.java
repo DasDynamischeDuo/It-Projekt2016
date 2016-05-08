@@ -22,12 +22,16 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import com.sun.org.apache.bcel.internal.generic.LMUL;
 
 import BildSteganography.BildSteganography;
+import Twitter.SaveImageFromUrl;
 import Twitter.TwitterLogin;
 
 
 
 public class Gui extends JFrame{
 
+	//Prüfe LoginDaten
+	private static boolean LoginDatenGesetzt = false;
+	
 	//VorschauStego
 	private JPanel contentpane;
 	private JPanel pHide;
@@ -211,31 +215,72 @@ public class Gui extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				int returnVal = chooser.showOpenDialog(null);
-				if(returnVal == JFileChooser.APPROVE_OPTION) {
-					uri = chooser.getSelectedFile().toURI();
-				}
-				    
-				twitterImage = new File(uri);
-				System.out.println(twitterImage);
-				TwitterLogin.tweetImage(twitterImage);
+				btTweetBildClocked();
 				
 			}
+
+			
 		});
 		
 		
 	}
 
+	private void btTweetBildClocked() {
+		
+		if (LoginDatenGesetzt == true) {
+			JFileChooser chooser = new JFileChooser();
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				uri = chooser.getSelectedFile().toURI();
+			}
+			twitterImage = new File(uri);
+			System.out.println(twitterImage);
+			TwitterLogin.tweetImage(twitterImage);
+		}
+		
+		JOptionPane.showMessageDialog(this,
+			    "Login Daten nicht gesetzt",
+			    "Warnung",
+			    JOptionPane.WARNING_MESSAGE);
+		
+	}
+	
 	private void btTweetClicked() {
 		
-		TwitterLogin.tweetStatus(txtTweet.getText());
+		if (LoginDatenGesetzt == true) {
+			TwitterLogin.tweetStatus(txtTweet.getText());
+		}
+		JOptionPane.showMessageDialog(this,
+			    "Login Daten nicht gesetzt",
+			    "Warnung",
+			    JOptionPane.WARNING_MESSAGE);
 		
 	}
 
 	private void btTwitterSucheClicked() {
 		
-		TwitterLogin.getTweetandMediafromHash(txtHash.getText());
+		if (LoginDatenGesetzt == true) {
+			String file = TwitterLogin.getTweetandMediafromHash(txtHash.getText());
+			JFileChooser chooser = new JFileChooser();
+			int returnVal = chooser.showSaveDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String dest = chooser.getSelectedFile().getAbsolutePath();
+				SaveImageFromUrl.setDestinationFile(dest);
+				try {
+					SaveImageFromUrl.saveImage(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} 
+		}
+		
+		JOptionPane.showMessageDialog(this,
+			    "Login Daten nicht gesetzt",
+			    "Warnung",
+			    JOptionPane.WARNING_MESSAGE);
+				
+		
 		
 	}
 
@@ -316,6 +361,12 @@ public class Gui extends JFrame{
 		pBildIn.add(bBildInLaden);
 		pHide.add(pBildIn, BorderLayout.CENTER);
 		pExtract.add(bBildOutLaden);
+		
+	}
+	
+	public static void setLogin(boolean b){
+		
+		LoginDatenGesetzt = b;
 		
 	}
 	

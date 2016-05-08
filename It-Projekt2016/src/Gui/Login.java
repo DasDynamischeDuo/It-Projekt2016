@@ -52,10 +52,25 @@ public class Login extends JFrame {
 
 	private void btOkClicked() {
 		
-		TwitterLogin.setAccesToken(txtAccesToken.getText());
-		TwitterLogin.setAccesTokenSecret(txtAccesTokenSecret.getText());
-		TwitterLogin.setConsumerKey(txtConsumerKey.getText());
-		TwitterLogin.setConsumerSecret(txtConsumerSecret.getText());
+		if (txtAccesToken.getText() != null && txtAccesTokenSecret.getText() != null && txtConsumerKey.getText() != null && txtConsumerSecret.getText() != null) {
+			
+			JOptionPane.showMessageDialog(this,
+				    "Felder nicht ausgefüllt!",
+				    "Warnung",
+				    JOptionPane.WARNING_MESSAGE);
+		}
+		else {
+			
+			TwitterLogin.setAccesToken(txtAccesToken.getText());
+			TwitterLogin.setAccesTokenSecret(txtAccesTokenSecret.getText());
+			TwitterLogin.setConsumerKey(txtConsumerKey.getText());
+			TwitterLogin.setConsumerSecret(txtConsumerSecret.getText());
+			
+			Gui.setLogin(true);
+			
+			
+		}
+
 		
 		this.dispose();
 		

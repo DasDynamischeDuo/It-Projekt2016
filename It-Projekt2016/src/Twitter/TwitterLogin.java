@@ -7,10 +7,10 @@ import twitter4j.conf.*;
 
 public class TwitterLogin {
 
-	private static String ConsumerKey = "fryDhzHTK7dOomLWgQkFx2AyQ";
-	private static String ConsumerSecret = "xbc0ad7wivaxs0QS1V2T1INlqxXWHg1aSu73IyoeB5qgHI5ylG";
-	private static String AccesToken = "2387628402-oVhA0NDOD4ZwWVBeI07Uo4SEFly4aqhKdS1TCze";
-	private static String AccesTokenSecret = "pF7o4Z1fkEn4BHALI3MzonbxKffnLDNtHpBDFLpCc0iQ9";
+	private static String ConsumerKey = null;
+	private static String ConsumerSecret = null;
+	private static String AccesToken = null;
+	private static String AccesTokenSecret = null;
 
 	private static TwitterFactory tf;
 	private static Twitter twitter;
@@ -45,12 +45,16 @@ public class TwitterLogin {
 	public static void tweetImage(File photo){
 		
 		tf.getSingleton();
-		UploadedMedia status = null;
+				
+		StatusUpdate status = new StatusUpdate("Neues Bild");
+		status.setMedia(photo); // set the image to be uploaded here.
 		try {
-			status = twitter.uploadMedia(photo);
+			twitter.updateStatus(status);
 		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		System.out.println("Successfully updated the image" +status);
 		
 		

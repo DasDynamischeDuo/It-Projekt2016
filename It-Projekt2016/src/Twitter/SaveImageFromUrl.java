@@ -15,7 +15,7 @@ public class SaveImageFromUrl {
 	
 	
 	private static String destinationFile = "images/image.jpg";
-	private static File index = new File("/images");
+	
 	
 	
 
@@ -24,6 +24,7 @@ public class SaveImageFromUrl {
 	}
 
 	public static void saveImage(String imageUrl) throws IOException {
+		
 		URL url = new URL(imageUrl);
 		InputStream is = url.openStream();
 		OutputStream os = new FileOutputStream(destinationFile);
@@ -50,6 +51,12 @@ public class SaveImageFromUrl {
 		}
 		
 		System.out.println("deleted");
+	}
+	
+	public static void setDestinationFile (String destination){
+		
+		destinationFile = destination;
+		
 	}
 
 }

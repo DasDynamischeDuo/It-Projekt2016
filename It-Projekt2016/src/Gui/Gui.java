@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,6 +32,7 @@ public class Gui extends JFrame{
 
 	//Prüfe LoginDaten
 	private static boolean LoginDatenGesetzt = false;
+	private String TwitterUrl = "https://apps.twitter.com/";
 	
 	//VorschauStego
 	private JPanel contentpane;
@@ -69,6 +71,12 @@ public class Gui extends JFrame{
 	
 	private JTextField txtHash,txtTweet;
 	private JLabel lHash;
+	
+	//MenuBar
+	private JMenuBar menuBar;
+	private JMenu menu;
+	private JMenuItem menuItem;
+	
 	
 	
 	
@@ -222,6 +230,24 @@ public class Gui extends JFrame{
 			
 		});
 		
+		menuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hilfeClicked();
+				
+			}
+		});
+		
+		
+	}
+
+	private void hilfeClicked() {
+		
+		
+		JOptionPane.showMessageDialog(this,
+		    "Um ihre Login Daten zu erhalten müssen sie sich hier: "+ TwitterUrl + " anmelden.");
+		
 		
 	}
 
@@ -328,8 +354,20 @@ public class Gui extends JFrame{
 		
 		lHash = new JLabel("Hashtag");
 		
+		//MenuBar
+		
+		//Create the menu bar.
+		menuBar = new JMenuBar();
+
+		//Build the first menu.
+		menu = new JMenu("Hilfe");
+		menuBar.add(menu);
+		menuItem = new JMenuItem("TwitterLogin");
+		menu.add(menuItem);
 		
 		
+		
+		this.setJMenuBar(menuBar);
 		this.setContentPane(contentpane);
 		contentpane.add(pHide);
 		contentpane.add(pButton);

@@ -73,6 +73,7 @@ public class TwitterLogin {
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
+		
 		for (Status status : result.getTweets()) {
 			System.out.println("@" + status.getUser().getScreenName() + " : " + status.getText());
 			for (MediaEntity mediaEntity : status.getMediaEntities()) {

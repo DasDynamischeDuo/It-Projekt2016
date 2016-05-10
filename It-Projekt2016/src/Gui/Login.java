@@ -31,7 +31,6 @@ public class Login extends JFrame {
 		
 		btAbr.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				btAbrClicked();
@@ -41,7 +40,6 @@ public class Login extends JFrame {
 		
 		btOk.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				btOkClicked();

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,9 +41,9 @@ public class SaveImageFromUrl {
 		os.close();
 	}
 	
-	public static void deleteImage() throws MalformedURLException{
+	public static void deleteImage() throws MalformedURLException, URISyntaxException{
 		
-		Path p = Paths.get(destinationFile);
+		Path p = Paths.get(new URI(destinationFile));
 		
 		try {
 			Files.delete(p);

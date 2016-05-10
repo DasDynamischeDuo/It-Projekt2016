@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import sun.misc.FpUtils;
-
 public class Startklasse {
 
 	public static void main(String[] args) {

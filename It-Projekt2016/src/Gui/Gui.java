@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -15,11 +14,6 @@ import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import com.sun.org.apache.bcel.internal.generic.LMUL;
 
 import BildSteganography.BildSteganography;
 import Twitter.TwitterLogin;
@@ -183,7 +177,6 @@ public class Gui extends JFrame{
 		});
 		btTwitterLogin.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTwitterLoginClicked();
 				
@@ -192,7 +185,6 @@ public class Gui extends JFrame{
 		
 		btTwitterSuche.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTwitterSucheClicked();
 				
@@ -200,7 +192,6 @@ public class Gui extends JFrame{
 		});
 		btTweet.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTweetClicked();
 				
@@ -209,7 +200,6 @@ public class Gui extends JFrame{
 		
 		btTweetBild.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				int returnVal = chooser.showOpenDialog(null);

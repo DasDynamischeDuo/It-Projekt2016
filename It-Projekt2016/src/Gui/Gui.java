@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,8 +30,13 @@ import Twitter.TwitterLogin;
 
 public class Gui extends JFrame{
 
+<<<<<<< HEAD
 	//Prï¿½fe LoginDaten
 	private static boolean LoginDatenGesetzt = false;
+=======
+	//Pruefe LoginDaten
+	private boolean LoginDatenGesetzt = false;
+>>>>>>> branch 'Emanuel' of https://github.com/DasDynamischeDuo/It-Projekt2016.git
 	private String TwitterUrl = "https://apps.twitter.com/";
 	
 	//VorschauStego
@@ -52,6 +59,9 @@ public class Gui extends JFrame{
 	private JButton bExtract;
 	
 	private BildSteganography bildSteganography;
+	private TwitterLogin twitterLogin;
+	
+	
 	private URI uri;
 	private File imgIn;
 	private File imgOut;
@@ -73,14 +83,17 @@ public class Gui extends JFrame{
 	//MenuBar
 	private JMenuBar menuBar;
 	private JMenu menu;
-	private JMenuItem menuItem;
+
+	private JMenuItem menuItemTwitterHilfe,menuItemStegoHilfe;
+
 	
 	
 	
-	
-	public Gui() throws IOException, URISyntaxException {
+	public Gui() throws IOException, URISyntaxException, NoSuchAlgorithmException, NoSuchPaddingException {
 		
-		bildSteganography = new BildSteganography();
+		bildSteganography = new BildSteganography(this);
+		twitterLogin = new TwitterLogin(this);
+		
 		initBild();
 		init();
 		actionListener();
@@ -166,7 +179,6 @@ public class Gui extends JFrame{
 				
 				try {
 					bufferedImgOut = bildSteganography.hideText(tfMessage.getText(), imgIn);
-					System.out.println(imgOut.getAbsolutePath());
 					ImageIO.write(bufferedImgOut, "png", imgOut);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -224,10 +236,22 @@ public class Gui extends JFrame{
 			
 		});
 		
-		menuItem.addActionListener(new ActionListener() {
+
+		menuItemTwitterHilfe.addActionListener(new ActionListener() {
+
+		
 			
 			public void actionPerformed(ActionEvent e) {
-				hilfeClicked();
+				twitterHilfe();
+				
+			}
+		});
+		
+		menuItemStegoHilfe.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				stegoHilfe();
+				
 				
 			}
 		});
@@ -235,11 +259,21 @@ public class Gui extends JFrame{
 		
 	}
 
-	private void hilfeClicked() {
+	protected void stegoHilfe() {
+		
+		JOptionPane.showMessageDialog(this,"Um eine Nachricht in einem Bild zu verschlüsseln muss man auf den Button vorschau, klicken.");
+		
+	}
+
+	private void twitterHilfe() {
 		
 		
 		JOptionPane.showMessageDialog(this,
+<<<<<<< HEAD
 		    "Um ihre Login Daten zu erhalten mï¿½ssen sie sich hier: "+ TwitterUrl + " anmelden.");
+=======
+		    "Um ihre Login Daten zu erhalten muessen sie sich hier: "+ TwitterUrl + " anmelden.");
+>>>>>>> branch 'Emanuel' of https://github.com/DasDynamischeDuo/It-Projekt2016.git
 		
 		
 	}
@@ -254,7 +288,7 @@ public class Gui extends JFrame{
 			}
 			twitterImage = new File(uri);
 			System.out.println(twitterImage);
-			TwitterLogin.tweetImage(twitterImage);
+			twitterLogin.tweetImage(twitterImage);
 		}
 		
 		JOptionPane.showMessageDialog(this,
@@ -267,19 +301,21 @@ public class Gui extends JFrame{
 	private void btTweetClicked() {
 		
 		if (LoginDatenGesetzt == true) {
-			TwitterLogin.tweetStatus(txtTweet.getText());
+			twitterLogin.tweetStatus(txtTweet.getText());
+		} else { 
+			JOptionPane.showMessageDialog(this, "Login Daten nicht gesetzt",
+				    "Warnung",
+				    JOptionPane.WARNING_MESSAGE);
 		}
-		JOptionPane.showMessageDialog(this,
-			    "Login Daten nicht gesetzt",
-			    "Warnung",
-			    JOptionPane.WARNING_MESSAGE);
+			   
 		
 	}
 
 	private void btTwitterSucheClicked() {
 		
 		if (LoginDatenGesetzt == true) {
-			String file = TwitterLogin.getTweetandMediafromHash(txtHash.getText());
+			String file = twitterLogin.getTweetandMediafromHash(txtHash.getText());
+			System.out.println(file);
 			JFileChooser chooser = new JFileChooser();
 			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -292,20 +328,22 @@ public class Gui extends JFrame{
 					e.printStackTrace();
 				}
 			} 
-		}
+			
+			
+		} else {
 		
 		JOptionPane.showMessageDialog(this,
 			    "Login Daten nicht gesetzt",
 			    "Warnung",
 			    JOptionPane.WARNING_MESSAGE);
 				
-		
+		}
 		
 	}
 
 	private void btTwitterLoginClicked() {
 		
-		Login l = new Login();
+		Login l = new Login(twitterLogin, this);
 		l.setVisible(true);
 		
 	}
@@ -349,15 +387,16 @@ public class Gui extends JFrame{
 		
 		//MenuBar
 		
-		//Create the menu bar.
+		
 		menuBar = new JMenuBar();
-
-		//Build the first menu.
 		menu = new JMenu("Hilfe");
 		menuBar.add(menu);
-		menuItem = new JMenuItem("TwitterLogin");
-		menu.add(menuItem);
-		
+
+		menuItemTwitterHilfe = new JMenuItem("TwitterLogin");
+		menuItemStegoHilfe = new JMenuItem("StegoHilfe");
+		menu.add(menuItemStegoHilfe);
+		menu.add(menuItemTwitterHilfe);
+
 		
 		
 		this.setJMenuBar(menuBar);
@@ -395,9 +434,15 @@ public class Gui extends JFrame{
 		
 	}
 	
-	public static void setLogin(boolean b){
+	public void setLogin(boolean b){
 		
 		LoginDatenGesetzt = b;
+		
+	}
+	
+	public void error(String text) {
+		
+		JOptionPane.showMessageDialog(this, text);
 		
 	}
 	

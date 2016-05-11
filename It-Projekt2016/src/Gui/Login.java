@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import twitter4j.TwitterException;
+
 import Twitter.TwitterLogin;
 
 public class Login extends JFrame {
@@ -14,8 +16,11 @@ public class Login extends JFrame {
 	private JButton btOk, btAbr;
 	private JLabel lConsumerKey, lConsumerSecret, lAccesToken, lAccesTokenSecret;
 	private JTextField txtConsumerKey, txtConsumerSecret, txtAccesToken, txtAccesTokenSecret;
+	private TwitterLogin twitterLogin;
+	private Gui gui;
+	
 
-	public Login() {
+	public Login(TwitterLogin twitterLogin, Gui gui) {
 
 		init();
 		zuordnung();
@@ -23,6 +28,8 @@ public class Login extends JFrame {
 		this.setSize(new Dimension(600, 160));
 		this.setContentPane(contentpane);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.twitterLogin = twitterLogin;
+		this.gui = gui;
 		
 		
 	}
@@ -50,28 +57,33 @@ public class Login extends JFrame {
 
 	private void btOkClicked() {
 		
-		if (txtAccesToken.getText() != null && txtAccesTokenSecret.getText() != null && txtConsumerKey.getText() != null && txtConsumerSecret.getText() != null) {
+		if (txtAccesToken.getText() == null && txtAccesTokenSecret.getText() == null && txtConsumerKey.getText() == null && txtConsumerSecret.getText() == null) {
 			
+<<<<<<< HEAD
 			JOptionPane.showMessageDialog(this,
 				    "Felder nicht ausgef�llt!",
 				    "Warnung",
 				    JOptionPane.WARNING_MESSAGE);
+=======
+			JOptionPane.showMessageDialog(this, "Felder nicht ausgefuellt!", "Warnung", JOptionPane.WARNING_MESSAGE);
+>>>>>>> branch 'Emanuel' of https://github.com/DasDynamischeDuo/It-Projekt2016.git
 		}
+		
 		else {
 			
-			TwitterLogin.setAccesToken(txtAccesToken.getText());
-			TwitterLogin.setAccesTokenSecret(txtAccesTokenSecret.getText());
-			TwitterLogin.setConsumerKey(txtConsumerKey.getText());
-			TwitterLogin.setConsumerSecret(txtConsumerSecret.getText());
+			twitterLogin.setAccesToken(txtAccesToken.getText());
+			twitterLogin.setAccesTokenSecret(txtAccesTokenSecret.getText());
+			twitterLogin.setConsumerKey(txtConsumerKey.getText());
+			twitterLogin.setConsumerSecret(txtConsumerSecret.getText());
 			
-			Gui.setLogin(true);
-			
+			twitterLogin.reConfiguration();
+			gui.setLogin(twitterLogin.checkLogin());
 			
 		}
 
 		
 		this.dispose();
-		
+			
 		
 	}
 

@@ -42,7 +42,7 @@ public class SaveImageFromUrl {
 	
 	public static void deleteImage() throws MalformedURLException{
 		
-		Path p = Paths.get(destinationFile);
+		Path p = Paths.get((new File(destinationFile)).toURI());
 		
 		try {
 			Files.delete(p);

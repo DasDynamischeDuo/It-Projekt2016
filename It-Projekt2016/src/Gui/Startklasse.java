@@ -14,7 +14,6 @@ public class Startklasse {
 	public static void main(String[] args) {
 		
 		Gui gui = null;
-		TwitterLogin twitterLogin = new TwitterLogin();
 		
 		try {
 			gui = new Gui();

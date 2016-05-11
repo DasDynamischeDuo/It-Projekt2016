@@ -2,6 +2,8 @@ package Twitter;
 
 import java.io.File;
 
+import Gui.Gui;
+
 import twitter4j.*;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.OAuthAuthorization;
@@ -15,13 +17,15 @@ public class TwitterLogin {
 	private  String AccesTokenSecret = null;
 
 	private ConfigurationBuilder cb;
+	private Gui gui;
 	
 	private  TwitterFactory tf;
 	private  Twitter twitter;
 
-	public TwitterLogin() {
+	public TwitterLogin(Gui gui) {
 
 		reConfiguration();
+		this.gui = gui;
 
 	}
 
@@ -89,18 +93,18 @@ public class TwitterLogin {
 	
 	public boolean checkLogin() {
 		
-		boolean isValid = false;
+		boolean isValid = true;
 		
-		try {
-			System.out.println(twitter.getId());
-		} catch (IllegalStateException e) {
-			System.out.println("test");
-			e.printStackTrace();
-		} catch (TwitterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			try {
+				twitter.getId();
+			} catch (IllegalStateException e) {
+				isValid = false;
+				e.printStackTrace();
+			} catch (TwitterException e) {
+				isValid = false;
+				e.printStackTrace();
+			}
+
 		return isValid;
 		
 	}

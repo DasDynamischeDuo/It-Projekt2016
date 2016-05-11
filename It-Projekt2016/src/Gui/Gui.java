@@ -31,7 +31,7 @@ import Twitter.TwitterLogin;
 public class Gui extends JFrame{
 
 	//Pruefe LoginDaten
-	private static boolean LoginDatenGesetzt = false;
+	private boolean LoginDatenGesetzt = false;
 	private String TwitterUrl = "https://apps.twitter.com/";
 	
 	//VorschauStego
@@ -87,7 +87,7 @@ public class Gui extends JFrame{
 	public Gui() throws IOException, URISyntaxException, NoSuchAlgorithmException, NoSuchPaddingException {
 		
 		bildSteganography = new BildSteganography(this);
-		twitterLogin = new TwitterLogin();
+		twitterLogin = new TwitterLogin(this);
 		
 		initBild();
 		init();
@@ -174,7 +174,6 @@ public class Gui extends JFrame{
 				
 				try {
 					bufferedImgOut = bildSteganography.hideText(tfMessage.getText(), imgIn);
-					System.out.println(imgOut.getAbsolutePath());
 					ImageIO.write(bufferedImgOut, "png", imgOut);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -294,11 +293,12 @@ public class Gui extends JFrame{
 		
 		if (LoginDatenGesetzt == true) {
 			twitterLogin.tweetStatus(txtTweet.getText());
+		} else { 
+			JOptionPane.showMessageDialog(this, "Login Daten nicht gesetzt",
+				    "Warnung",
+				    JOptionPane.WARNING_MESSAGE);
 		}
-		JOptionPane.showMessageDialog(this,
-			    "Login Daten nicht gesetzt",
-			    "Warnung",
-			    JOptionPane.WARNING_MESSAGE);
+			   
 		
 	}
 
@@ -306,6 +306,7 @@ public class Gui extends JFrame{
 		
 		if (LoginDatenGesetzt == true) {
 			String file = twitterLogin.getTweetandMediafromHash(txtHash.getText());
+			System.out.println(file);
 			JFileChooser chooser = new JFileChooser();
 			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -318,20 +319,22 @@ public class Gui extends JFrame{
 					e.printStackTrace();
 				}
 			} 
-		}
+			
+			
+		} else {
 		
 		JOptionPane.showMessageDialog(this,
 			    "Login Daten nicht gesetzt",
 			    "Warnung",
 			    JOptionPane.WARNING_MESSAGE);
 				
-		
+		}
 		
 	}
 
 	private void btTwitterLoginClicked() {
 		
-		Login l = new Login(twitterLogin);
+		Login l = new Login(twitterLogin, this);
 		l.setVisible(true);
 		
 	}
@@ -422,7 +425,7 @@ public class Gui extends JFrame{
 		
 	}
 	
-	public static void setLogin(boolean b){
+	public void setLogin(boolean b){
 		
 		LoginDatenGesetzt = b;
 		

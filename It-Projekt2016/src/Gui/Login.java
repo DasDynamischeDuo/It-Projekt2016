@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import twitter4j.TwitterException;
+
 import Twitter.TwitterLogin;
 
 public class Login extends JFrame {
@@ -15,8 +17,10 @@ public class Login extends JFrame {
 	private JLabel lConsumerKey, lConsumerSecret, lAccesToken, lAccesTokenSecret;
 	private JTextField txtConsumerKey, txtConsumerSecret, txtAccesToken, txtAccesTokenSecret;
 	private TwitterLogin twitterLogin;
+	private Gui gui;
+	
 
-	public Login(TwitterLogin twitterLogin) {
+	public Login(TwitterLogin twitterLogin, Gui gui) {
 
 		init();
 		zuordnung();
@@ -25,6 +29,7 @@ public class Login extends JFrame {
 		this.setContentPane(contentpane);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.twitterLogin = twitterLogin;
+		this.gui = gui;
 		
 		
 	}
@@ -54,11 +59,9 @@ public class Login extends JFrame {
 		
 		if (txtAccesToken.getText() == null && txtAccesTokenSecret.getText() == null && txtConsumerKey.getText() == null && txtConsumerSecret.getText() == null) {
 			
-			JOptionPane.showMessageDialog(this,
-				    "Felder nicht ausgefuellt!",
-				    "Warnung",
-				    JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Felder nicht ausgefuellt!", "Warnung", JOptionPane.WARNING_MESSAGE);
 		}
+		
 		else {
 			
 			twitterLogin.setAccesToken(txtAccesToken.getText());
@@ -66,20 +69,14 @@ public class Login extends JFrame {
 			twitterLogin.setConsumerKey(txtConsumerKey.getText());
 			twitterLogin.setConsumerSecret(txtConsumerSecret.getText());
 			
-			
-			twitterLogin.checkLogin();
-			
-			Gui.setLogin(true);
-			
-			
-			
+			twitterLogin.reConfiguration();
+			gui.setLogin(twitterLogin.checkLogin());
 			
 		}
 
 		
 		this.dispose();
-		
-		twitterLogin.reConfiguration();
+			
 		
 	}
 

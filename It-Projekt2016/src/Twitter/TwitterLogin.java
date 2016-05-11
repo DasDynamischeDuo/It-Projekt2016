@@ -1,37 +1,50 @@
 package Twitter;
 
+import java.awt.List;
 import java.io.File;
+import java.util.Vector;
+
+import Gui.Gui;
 
 import twitter4j.*;
+import twitter4j.auth.Authorization;
+import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.*;
 
 public class TwitterLogin {
 
-	private static String ConsumerKey = null;
-	private static String ConsumerSecret = null;
-	private static String AccesToken = null;
-	private static String AccesTokenSecret = null;
+	private ConfigurationBuilder cb;
+	private Gui gui;
+	private LoginData loginData;
 
-	private static TwitterFactory tf;
-	private static Twitter twitter;
+	private TwitterFactory tf;
+	private Twitter twitter;
 
-	public TwitterLogin() {
+	public TwitterLogin(Gui gui, LoginData loginData) {
 
+		this.gui = gui;
+		this.loginData = loginData;
 		reConfiguration();
-
+		
 	}
 
 	public void reConfiguration() {
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true).setOAuthConsumerKey(ConsumerKey)
-								.setOAuthConsumerSecret(ConsumerSecret)
-								.setOAuthAccessToken(AccesToken)
-								.setOAuthAccessTokenSecret(AccesTokenSecret);
+		
+		cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true).setOAuthConsumerKey(loginData.getConsumerKey())
+								.setOAuthConsumerSecret(loginData.getConsumerSecret())
+								.setOAuthAccessToken(loginData.getAccesToken())
+								.setOAuthAccessTokenSecret(loginData.getAccesTokenSecret());
+		
 		tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}
 
-	public static void tweetStatus(String tweet) {
+	public void setLoginData(LoginData loginData) {
+		this.loginData = loginData;
+	}
+
+	public void tweetStatus(String tweet) {
 		tf.getSingleton();
 		Status status = null;
 		try {
@@ -39,14 +52,13 @@ public class TwitterLogin {
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Successfully updated the status to [" + status.getText() + "].");
 	}
-	
-	public static void tweetImage(File photo){
-		
+
+	public void tweetImage(File photo, String hash) {
+
 		tf.getSingleton();
-				
-		StatusUpdate status = new StatusUpdate("Neues Bild");
+
+		StatusUpdate status = new StatusUpdate("#" +hash);
 		status.setMedia(photo); // set the image to be uploaded here.
 		try {
 			twitter.updateStatus(status);
@@ -54,17 +66,14 @@ public class TwitterLogin {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println("Successfully updated the image" +status);
-		
-		
+
 	}
 
-	public static String getTweetandMediafromHash(String Hash) {
+	public String getTweetandMediafromHash(String hash, String user) {
 
 		String returnvalue = null;
-		Hash = "meinpersoehnlicherhash";
 
+		/*
 		tf.getSingleton();
 		Query query = new Query(Hash);
 		QueryResult result = null;
@@ -74,33 +83,58 @@ public class TwitterLogin {
 			e.printStackTrace();
 		}
 		
-		for (Status status : result.getTweets()) {
-			System.out.println("@" + status.getUser().getScreenName() + " : " + status.getText());
-			for (MediaEntity mediaEntity : status.getMediaEntities()) {
-				System.out.println(mediaEntity.getType() + ": " + mediaEntity.getMediaURL());
-				returnvalue = mediaEntity.getMediaURL();
+		*/
+		
+		try {
+			ResponseList<Status> timeline = twitter.getUserTimeline(twitter.showUser(user).getId());		
+			
+			for (Status status : timeline) {
+				for (HashtagEntity hashtags : status.getHashtagEntities()) {
+					if (hashtags.getText().equals(hash)) {
+						for (MediaEntity mediaEntity : status.getMediaEntities()) {
+							returnvalue = mediaEntity.getMediaURL();
+						}
+					}
+				}
 			}
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+		/*
+		for (Status status : result.getTweets()) {
+			System.out.println(status.getUser());
+
+		}
 		
+		*/
+	
 		return returnvalue;
 
 	}
 
-	public static void setConsumerKey(String consumerKey) {
-		ConsumerKey = consumerKey;
-	}
+	public boolean checkLogin() {
 
-	public static void setConsumerSecret(String consumerSecret) {
-		ConsumerSecret = consumerSecret;
-	}
+		boolean isValid = true;
 
-	public static void setAccesToken(String accesToken) {
-		AccesToken = accesToken;
-	}
+		try {
+			twitter.getId();
+		} catch (IllegalStateException e) {
+			gui.error("Login Fehlgeschlagen");
+			isValid = false;
+			e.printStackTrace();
+		} catch (TwitterException e) {
+			gui.error("Login Fehlgeschlagen");
+			isValid = false;
+			e.printStackTrace();
+		}
 
-	public static void setAccesTokenSecret(String accesTokenSecret) {
-		AccesTokenSecret = accesTokenSecret;
+		return isValid;
+
 	}
 
 }

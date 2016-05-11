@@ -3,19 +3,31 @@ package Gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import twitter4j.TwitterException;
+
+import Twitter.LoginData;
 import Twitter.TwitterLogin;
 
 public class Login extends JFrame {
 
 	private JPanel contentpane, arbeitsPane, btPane;
 	private JButton btOk, btAbr;
-	private JLabel lConsumerKey, lConsumerSecret, lAccesToken, lAccesTokenSecret;
-	private JTextField txtConsumerKey, txtConsumerSecret, txtAccesToken, txtAccesTokenSecret;
+	private JLabel lConsumerKey, lConsumerSecret, lAccesToken, lAccesTokenSecret, lName;
+	private JTextField txtConsumerKey, txtConsumerSecret, txtAccesToken, txtAccesTokenSecret, txtName;
+	
+	private TwitterLogin twitterLogin;
+	private Gui gui;
+	private LoginData loginData;
+	
 
-	public Login() {
+	public Login(TwitterLogin twitterLogin, Gui gui, LoginData loginData) {
 
 		init();
 		zuordnung();
@@ -23,7 +35,9 @@ public class Login extends JFrame {
 		this.setSize(new Dimension(600, 160));
 		this.setContentPane(contentpane);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
+		this.twitterLogin = twitterLogin;
+		this.gui = gui;
+		this.loginData = loginData;
 		
 	}
 
@@ -49,29 +63,29 @@ public class Login extends JFrame {
 	}
 
 	private void btOkClicked() {
-		
-		if (txtAccesToken.getText() != null && txtAccesTokenSecret.getText() != null && txtConsumerKey.getText() != null && txtConsumerSecret.getText() != null) {
 			
-			JOptionPane.showMessageDialog(this,
-				    "Felder nicht ausgef�llt!",
-				    "Warnung",
-				    JOptionPane.WARNING_MESSAGE);
-		}
-		else {
+			loginData.setName(txtName.getText());
+			loginData.setAccesToken(txtAccesToken.getText());
+			loginData.setAccesTokenSecret(txtAccesTokenSecret.getText());
+			loginData.setConsumerKey(txtConsumerKey.getText());
+			loginData.setConsumerSecret(txtConsumerSecret.getText());
 			
-			TwitterLogin.setAccesToken(txtAccesToken.getText());
-			TwitterLogin.setAccesTokenSecret(txtAccesTokenSecret.getText());
-			TwitterLogin.setConsumerKey(txtConsumerKey.getText());
-			TwitterLogin.setConsumerSecret(txtConsumerSecret.getText());
-			
-			Gui.setLogin(true);
-			
-			
-		}
+			try {
+				loginData.saveLoginData();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
+			twitterLogin.reConfiguration();
+			gui.setLogin(twitterLogin.checkLogin());
+			
 		
 		this.dispose();
-		
+			
 		
 	}
 
@@ -83,6 +97,8 @@ public class Login extends JFrame {
 
 	private void zuordnung() {
 		
+		arbeitsPane.add(lName);
+		arbeitsPane.add(txtName);
 		arbeitsPane.add(lAccesToken);
 		arbeitsPane.add(txtAccesToken);
 		arbeitsPane.add(lAccesTokenSecret);
@@ -102,21 +118,107 @@ public class Login extends JFrame {
 
 	private void init() {
 		contentpane = new JPanel();
-		arbeitsPane = new JPanel(new GridLayout(4,4));
+		arbeitsPane = new JPanel(new GridLayout(6,4));
 		btPane = new JPanel(new GridLayout(1,2));
 		
 		btOk = new JButton("OK");
 		btAbr = new JButton("Abrechen");
 		
+		btOk.setEnabled(false);
+		
+		lName = new JLabel("Name");
 		lConsumerKey = new JLabel("Consumer Key");
 		lConsumerSecret = new JLabel("Consumer Sectret");
 		lAccesToken = new JLabel("AccesToken");
 		lAccesTokenSecret = new JLabel("AccesTokenSecret");
 		
+		txtName = new JTextField(25);
 		txtConsumerKey = new JTextField(25);
 		txtConsumerSecret = new JTextField(25);
 		txtAccesToken = new JTextField(25);
 		txtAccesTokenSecret = new JTextField(25);
+		
+		txtConsumerKey.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void removeUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void insertUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void changedUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+		});
+		
+		txtConsumerSecret.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void removeUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void insertUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void changedUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+		});
+		
+		txtAccesToken.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void removeUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void insertUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void changedUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+		});
+		
+		txtAccesTokenSecret.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void removeUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void insertUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+			
+			public void changedUpdate(DocumentEvent arg0) {
+				changed();
+				
+			}
+		});
+		
+	}
+
+	protected void changed() {
+
+		if (txtAccesToken.getText().equals("") | txtAccesTokenSecret.getText().equals("") | txtConsumerKey.getText().equals("") | txtConsumerSecret.getText().equals("")) {
+			btOk.setEnabled(false);
+		} else {
+			btOk.setEnabled(true);
+		}
 		
 		
 	}

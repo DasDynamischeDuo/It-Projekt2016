@@ -20,8 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
 
-import com.sun.org.apache.bcel.internal.generic.LMUL;
-
 import BildSteganography.BildSteganography;
 import Twitter.SaveImageFromUrl;
 import Twitter.TwitterLogin;
@@ -30,7 +28,7 @@ import Twitter.TwitterLogin;
 
 public class Gui extends JFrame{
 
-	//Prüfe LoginDaten
+	//Prï¿½fe LoginDaten
 	private static boolean LoginDatenGesetzt = false;
 	private String TwitterUrl = "https://apps.twitter.com/";
 	
@@ -195,7 +193,6 @@ public class Gui extends JFrame{
 		});
 		btTwitterLogin.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTwitterLoginClicked();
 				
@@ -204,7 +201,6 @@ public class Gui extends JFrame{
 		
 		btTwitterSuche.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTwitterSucheClicked();
 				
@@ -212,7 +208,6 @@ public class Gui extends JFrame{
 		});
 		btTweet.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTweetClicked();
 				
@@ -221,7 +216,6 @@ public class Gui extends JFrame{
 		
 		btTweetBild.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTweetBildClocked();
 				
@@ -232,7 +226,6 @@ public class Gui extends JFrame{
 		
 		menuItem.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				hilfeClicked();
 				
@@ -246,7 +239,7 @@ public class Gui extends JFrame{
 		
 		
 		JOptionPane.showMessageDialog(this,
-		    "Um ihre Login Daten zu erhalten müssen sie sich hier: "+ TwitterUrl + " anmelden.");
+		    "Um ihre Login Daten zu erhalten mï¿½ssen sie sich hier: "+ TwitterUrl + " anmelden.");
 		
 		
 	}

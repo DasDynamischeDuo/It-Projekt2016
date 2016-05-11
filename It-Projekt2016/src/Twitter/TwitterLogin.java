@@ -3,17 +3,21 @@ package Twitter;
 import java.io.File;
 
 import twitter4j.*;
+import twitter4j.auth.Authorization;
+import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.*;
 
 public class TwitterLogin {
 
-	private static String ConsumerKey = null;
-	private static String ConsumerSecret = null;
-	private static String AccesToken = null;
-	private static String AccesTokenSecret = null;
+	private  String ConsumerKey = null;
+	private  String ConsumerSecret = null;
+	private  String AccesToken = null;
+	private  String AccesTokenSecret = null;
 
-	private static TwitterFactory tf;
-	private static Twitter twitter;
+	private ConfigurationBuilder cb;
+	
+	private  TwitterFactory tf;
+	private  Twitter twitter;
 
 	public TwitterLogin() {
 
@@ -22,7 +26,7 @@ public class TwitterLogin {
 	}
 
 	public void reConfiguration() {
-		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true).setOAuthConsumerKey(ConsumerKey)
 								.setOAuthConsumerSecret(ConsumerSecret)
 								.setOAuthAccessToken(AccesToken)
@@ -31,7 +35,7 @@ public class TwitterLogin {
 		twitter = tf.getInstance();
 	}
 
-	public static void tweetStatus(String tweet) {
+	public void tweetStatus(String tweet) {
 		tf.getSingleton();
 		Status status = null;
 		try {
@@ -39,10 +43,9 @@ public class TwitterLogin {
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Successfully updated the status to [" + status.getText() + "].");
 	}
 	
-	public static void tweetImage(File photo){
+	public void tweetImage(File photo){
 		
 		tf.getSingleton();
 				
@@ -55,15 +58,13 @@ public class TwitterLogin {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Successfully updated the image" +status);
 		
 		
 	}
 
-	public static String getTweetandMediafromHash(String Hash) {
+	public String getTweetandMediafromHash(String Hash) {
 
 		String returnvalue = null;
-		Hash = "meinpersoehnlicherhash";
 
 		tf.getSingleton();
 		Query query = new Query(Hash);
@@ -75,9 +76,7 @@ public class TwitterLogin {
 		}
 		
 		for (Status status : result.getTweets()) {
-			System.out.println("@" + status.getUser().getScreenName() + " : " + status.getText());
 			for (MediaEntity mediaEntity : status.getMediaEntities()) {
-				System.out.println(mediaEntity.getType() + ": " + mediaEntity.getMediaURL());
 				returnvalue = mediaEntity.getMediaURL();
 			}
 		}
@@ -86,20 +85,41 @@ public class TwitterLogin {
 		return returnvalue;
 
 	}
+	
+	
+	public boolean checkLogin() {
+		
+		boolean isValid = false;
+		
+		try {
+			System.out.println(twitter.getId());
+		} catch (IllegalStateException e) {
+			System.out.println("test");
+			e.printStackTrace();
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return isValid;
+		
+	}
+	
+	
 
-	public static void setConsumerKey(String consumerKey) {
+	public void setConsumerKey(String consumerKey) {
 		ConsumerKey = consumerKey;
 	}
 
-	public static void setConsumerSecret(String consumerSecret) {
+	public void setConsumerSecret(String consumerSecret) {
 		ConsumerSecret = consumerSecret;
 	}
 
-	public static void setAccesToken(String accesToken) {
+	public void setAccesToken(String accesToken) {
 		AccesToken = accesToken;
 	}
 
-	public static void setAccesTokenSecret(String accesTokenSecret) {
+	public void setAccesTokenSecret(String accesTokenSecret) {
 		AccesTokenSecret = accesTokenSecret;
 	}
 

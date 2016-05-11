@@ -54,6 +54,9 @@ public class Gui extends JFrame{
 	private JButton bExtract;
 	
 	private BildSteganography bildSteganography;
+	private TwitterLogin twitterLogin;
+	
+	
 	private URI uri;
 	private File imgIn;
 	private File imgOut;
@@ -84,6 +87,8 @@ public class Gui extends JFrame{
 	public Gui() throws IOException, URISyntaxException, NoSuchAlgorithmException, NoSuchPaddingException {
 		
 		bildSteganography = new BildSteganography(this);
+		twitterLogin = new TwitterLogin();
+		
 		initBild();
 		init();
 		actionListener();
@@ -275,7 +280,7 @@ public class Gui extends JFrame{
 			}
 			twitterImage = new File(uri);
 			System.out.println(twitterImage);
-			TwitterLogin.tweetImage(twitterImage);
+			twitterLogin.tweetImage(twitterImage);
 		}
 		
 		JOptionPane.showMessageDialog(this,
@@ -288,7 +293,7 @@ public class Gui extends JFrame{
 	private void btTweetClicked() {
 		
 		if (LoginDatenGesetzt == true) {
-			TwitterLogin.tweetStatus(txtTweet.getText());
+			twitterLogin.tweetStatus(txtTweet.getText());
 		}
 		JOptionPane.showMessageDialog(this,
 			    "Login Daten nicht gesetzt",
@@ -300,7 +305,7 @@ public class Gui extends JFrame{
 	private void btTwitterSucheClicked() {
 		
 		if (LoginDatenGesetzt == true) {
-			String file = TwitterLogin.getTweetandMediafromHash(txtHash.getText());
+			String file = twitterLogin.getTweetandMediafromHash(txtHash.getText());
 			JFileChooser chooser = new JFileChooser();
 			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -326,7 +331,7 @@ public class Gui extends JFrame{
 
 	private void btTwitterLoginClicked() {
 		
-		Login l = new Login();
+		Login l = new Login(twitterLogin);
 		l.setVisible(true);
 		
 	}

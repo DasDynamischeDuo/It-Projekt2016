@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
-
-import com.sun.org.apache.bcel.internal.generic.LMUL;
 
 import BildSteganography.BildSteganography;
 import Twitter.SaveImageFromUrl;
@@ -30,7 +30,7 @@ import Twitter.TwitterLogin;
 
 public class Gui extends JFrame{
 
-	//Prüfe LoginDaten
+	//Pruefe LoginDaten
 	private static boolean LoginDatenGesetzt = false;
 	private String TwitterUrl = "https://apps.twitter.com/";
 	
@@ -75,14 +75,15 @@ public class Gui extends JFrame{
 	//MenuBar
 	private JMenuBar menuBar;
 	private JMenu menu;
+
 	private JMenuItem menuItemTwitterHilfe,menuItemStegoHilfe;
+
 	
 	
 	
-	
-	public Gui() throws IOException, URISyntaxException {
+	public Gui() throws IOException, URISyntaxException, NoSuchAlgorithmException, NoSuchPaddingException {
 		
-		bildSteganography = new BildSteganography();
+		bildSteganography = new BildSteganography(this);
 		initBild();
 		init();
 		actionListener();
@@ -195,7 +196,6 @@ public class Gui extends JFrame{
 		});
 		btTwitterLogin.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTwitterLoginClicked();
 				
@@ -204,7 +204,6 @@ public class Gui extends JFrame{
 		
 		btTwitterSuche.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTwitterSucheClicked();
 				
@@ -212,7 +211,6 @@ public class Gui extends JFrame{
 		});
 		btTweet.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTweetClicked();
 				
@@ -221,7 +219,6 @@ public class Gui extends JFrame{
 		
 		btTweetBild.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				btTweetBildClocked();
 				
@@ -230,9 +227,11 @@ public class Gui extends JFrame{
 			
 		});
 		
+
 		menuItemTwitterHilfe.addActionListener(new ActionListener() {
+
+		
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				twitterHilfe();
 				
@@ -241,7 +240,6 @@ public class Gui extends JFrame{
 		
 		menuItemStegoHilfe.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				stegoHilfe();
 				
@@ -262,7 +260,7 @@ public class Gui extends JFrame{
 		
 		
 		JOptionPane.showMessageDialog(this,
-		    "Um ihre Login Daten zu erhalten müssen sie sich hier: "+ TwitterUrl + " anmelden.");
+		    "Um ihre Login Daten zu erhalten muessen sie sich hier: "+ TwitterUrl + " anmelden.");
 		
 		
 	}
@@ -376,11 +374,12 @@ public class Gui extends JFrame{
 		menuBar = new JMenuBar();
 		menu = new JMenu("Hilfe");
 		menuBar.add(menu);
+
 		menuItemTwitterHilfe = new JMenuItem("TwitterLogin");
 		menuItemStegoHilfe = new JMenuItem("StegoHilfe");
 		menu.add(menuItemStegoHilfe);
 		menu.add(menuItemTwitterHilfe);
-		
+
 		
 		
 		this.setJMenuBar(menuBar);
@@ -421,6 +420,12 @@ public class Gui extends JFrame{
 	public static void setLogin(boolean b){
 		
 		LoginDatenGesetzt = b;
+		
+	}
+	
+	public void error(String text) {
+		
+		JOptionPane.showMessageDialog(this, text);
 		
 	}
 	

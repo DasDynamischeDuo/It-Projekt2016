@@ -31,7 +31,6 @@ public class Login extends JFrame {
 		
 		btAbr.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				btAbrClicked();
@@ -41,7 +40,6 @@ public class Login extends JFrame {
 		
 		btOk.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				btOkClicked();
@@ -55,7 +53,7 @@ public class Login extends JFrame {
 		if (txtAccesToken.getText() != null && txtAccesTokenSecret.getText() != null && txtConsumerKey.getText() != null && txtConsumerSecret.getText() != null) {
 			
 			JOptionPane.showMessageDialog(this,
-				    "Felder nicht ausgefüllt!",
+				    "Felder nicht ausgefï¿½llt!",
 				    "Warnung",
 				    JOptionPane.WARNING_MESSAGE);
 		}

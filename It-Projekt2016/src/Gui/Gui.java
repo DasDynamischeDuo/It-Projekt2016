@@ -75,7 +75,7 @@ public class Gui extends JFrame{
 	//MenuBar
 	private JMenuBar menuBar;
 	private JMenu menu;
-	private JMenuItem menuItem;
+	private JMenuItem menuItemTwitterHilfe,menuItemStegoHilfe;
 	
 	
 	
@@ -230,11 +230,21 @@ public class Gui extends JFrame{
 			
 		});
 		
-		menuItem.addActionListener(new ActionListener() {
+		menuItemTwitterHilfe.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hilfeClicked();
+				twitterHilfe();
+				
+			}
+		});
+		
+		menuItemStegoHilfe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stegoHilfe();
+				
 				
 			}
 		});
@@ -242,7 +252,13 @@ public class Gui extends JFrame{
 		
 	}
 
-	private void hilfeClicked() {
+	protected void stegoHilfe() {
+		
+		JOptionPane.showMessageDialog(this,"Um eine Nachricht in einem Bild zu verschlüsseln muss man auf den Button vorschau, klicken.");
+		
+	}
+
+	private void twitterHilfe() {
 		
 		
 		JOptionPane.showMessageDialog(this,
@@ -356,14 +372,14 @@ public class Gui extends JFrame{
 		
 		//MenuBar
 		
-		//Create the menu bar.
+		
 		menuBar = new JMenuBar();
-
-		//Build the first menu.
 		menu = new JMenu("Hilfe");
 		menuBar.add(menu);
-		menuItem = new JMenuItem("TwitterLogin");
-		menu.add(menuItem);
+		menuItemTwitterHilfe = new JMenuItem("TwitterLogin");
+		menuItemStegoHilfe = new JMenuItem("StegoHilfe");
+		menu.add(menuItemStegoHilfe);
+		menu.add(menuItemTwitterHilfe);
 		
 		
 		

@@ -338,8 +338,9 @@ public class Gui extends JFrame {
 
 			URI uri = hideInImage().toURI();
 			twitterImage = new File(uri);
-			System.out.println(twitterImage);
 			twitterLogin.tweetImage(twitterImage, txtHashEingabe.getText());
+			showImageSteno(uri);
+			
 		} else {
 
 			JOptionPane.showMessageDialog(this, "Login Daten nicht gesetzt",

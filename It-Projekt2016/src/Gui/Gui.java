@@ -363,12 +363,12 @@ public class Gui extends JFrame{
 			System.out.println(twitterImage);
 			twitterLogin.tweetImage(twitterImage, txtHashEingabe.getText());
 		}
-		
+		else {
 		JOptionPane.showMessageDialog(this,
 			    "Login Daten nicht gesetzt",
 			    "Warnung",
 			    JOptionPane.WARNING_MESSAGE);
-		
+		}
 	}
 	
 	private void btTweetClicked() {

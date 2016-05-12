@@ -388,14 +388,17 @@ public class Gui extends JFrame{
 			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				dest = chooser.getSelectedFile().getAbsolutePath();
-				SaveImageFromUrl.setDestinationFile(dest);
 				try {
-					SaveImageFromUrl.saveImage(file);
-				} catch (IOException e) {
+					BufferedImage bufferedImage = ImageIO.read(new File(file));
+					ImageIO.write(bufferedImgOut, "png", new File(dest));
+					
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
+				
 			}
+			
 			
 			showImageSteno(new File(dest).toURI());
 			

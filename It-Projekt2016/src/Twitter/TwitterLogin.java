@@ -72,18 +72,6 @@ public class TwitterLogin {
 	public String getTweetandMediafromHash(String hash, String user) {
 
 		String returnvalue = null;
-
-		/*
-		tf.getSingleton();
-		Query query = new Query(Hash);
-		QueryResult result = null;
-		try {
-			result = twitter.search(query);
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
-		
-		*/
 		
 		try {
 			ResponseList<Status> timeline = twitter.getUserTimeline(twitter.showUser(user).getId());		
@@ -104,14 +92,6 @@ public class TwitterLogin {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*
-		for (Status status : result.getTweets()) {
-			System.out.println(status.getUser());
-
-		}
-		
-		*/
 	
 		return returnvalue;
 

@@ -70,7 +70,7 @@ public class Gui extends JFrame{
 	private ImageIcon iconOut;
 	
 	//Twitter
-	private JPanel pTwitterLogin,pTwitterButtons,pTwitterSonst;
+	private JPanel pTwitterLeer,pTwitterSuche,pTwitterTweet;
 	
 	private JButton btTwitterSuche,btTweetBild;
 	
@@ -82,6 +82,19 @@ public class Gui extends JFrame{
 	private JMenu menuHilfe, menuLogin;
 
 	private JMenuItem menuItemTwitterHilfe, menuItemStegoHilfe, menuItemNewLogin, menuLoadLogin;
+	
+	//Verschönerungspanels
+	
+	private JPanel pLeer;
+	private JPanel pbextract,pbhide,ptxtmessage;
+	
+	private JPanel ptxtUBt;
+	private JPanel plhashlinks,ptxtlinks,pbtBildtwittern;
+	
+	private JPanel pRGridL,pRGridTxt;
+	private JPanel plAcc,plHash, ptxtAcc,ptxtHash;
+
+	
 
 	
 	
@@ -96,7 +109,7 @@ public class Gui extends JFrame{
 		init();
 		actionListener();
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setSize(new Dimension(1200,700));
+		this.setSize(new Dimension(1150,700));
 		
 	}
 
@@ -424,16 +437,19 @@ public class Gui extends JFrame{
 		//OberesPanel
 		contentpane = new JPanel(new GridLayout(2,3));
 		pHide = new JPanel();
-		pButton = new JPanel(new BorderLayout());
+		pButton = new JPanel(new GridLayout(5,1));
 		pExtract = new JPanel();
 		pMessage = new JPanel();
 		pBildIn = new JPanel();
-		pButtonSteno = new JPanel(new BorderLayout());
+		
 		tfMessage = new JTextField("Message");
+		tfMessage.setColumns(25);
 		bBildInLaden = new JButton(iconIn);
 		bBildOutLaden = new JButton(iconOut);
 		bHide = new JButton("Hide ->");
 		bExtract = new JButton("<- Extract");
+		
+		
 		txtAccount = new JTextField();
 		
 		
@@ -442,9 +458,9 @@ public class Gui extends JFrame{
 		
 		//Unteres Panel
 		
-		pTwitterLogin = new JPanel();
-		pTwitterButtons = new JPanel();
-		pTwitterSonst = new JPanel();
+		pTwitterLeer = new JPanel();
+		pTwitterSuche = new JPanel(new BorderLayout());
+		pTwitterTweet = new JPanel(new BorderLayout());
 		
 		btTwitterSuche = new JButton("Suche");
 		btTweetBild = new JButton("Bild twittern");
@@ -476,7 +492,53 @@ public class Gui extends JFrame{
 		menuItemStegoHilfe = new JMenuItem("Steganographie");
 		menuHilfe.add(menuItemStegoHilfe);
 		menuHilfe.add(menuItemTwitterHilfe);
+		
+		//Verschönerung
+		
+		pLeer = new JPanel();
+		
+		pbextract = new JPanel();
+		pbextract.add(bExtract,BorderLayout.CENTER);
+		pbhide = new JPanel();
+		pbhide.add(bHide,BorderLayout.CENTER);
+		ptxtmessage = new JPanel();
+		ptxtmessage.add(tfMessage,BorderLayout.CENTER);
+		
+		ptxtUBt = new JPanel(new GridLayout(3,1));
+		
+		plhashlinks = new JPanel();
+		plhashlinks.add(lHashEingabe);
+		ptxtlinks = new JPanel();
+		ptxtlinks.add(txtHashEingabe);
+	
 
+		ptxtUBt.add(ptxtlinks);
+		
+		pRGridL = new JPanel(new GridLayout(2,1));
+		plAcc = new JPanel();
+		plAcc.add(lAccount);
+		pRGridL.add(plAcc);
+		plHash = new JPanel();
+		plHash.add(lHash);
+		pRGridL.add(plHash);
+		
+		pRGridTxt = new JPanel(new GridLayout(2,1));
+		ptxtAcc = new JPanel();
+		ptxtAcc.add(txtAccount);
+		pRGridTxt.add(ptxtAcc);
+		
+		ptxtHash = new JPanel();
+		ptxtHash.add(txtHash);
+		pRGridTxt.add(ptxtHash);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		this.setJMenuBar(menuBar);
@@ -484,27 +546,27 @@ public class Gui extends JFrame{
 		contentpane.add(pHide);
 		contentpane.add(pButton);
 		contentpane.add(pExtract);
-		contentpane.add(pTwitterSonst);
-		contentpane.add(pTwitterLogin);
-		contentpane.add(pTwitterButtons);
+		contentpane.add(pTwitterTweet);
+		contentpane.add(pTwitterLeer);
+		contentpane.add(pTwitterSuche);
 		
 		//UnteresPanel
-		pTwitterButtons.add(lAccount);
-		pTwitterButtons.add(txtAccount);
-		pTwitterButtons.add(lHash,BorderLayout.WEST);
-		pTwitterButtons.add(txtHash,BorderLayout.EAST);
-		pTwitterButtons.add(btTwitterSuche,BorderLayout.SOUTH);
+		pTwitterSuche.add(pRGridL,BorderLayout.WEST);
+		pTwitterSuche.add(pRGridTxt,BorderLayout.EAST);
+		pTwitterSuche.add(btTwitterSuche,BorderLayout.SOUTH);
 		
-		pTwitterSonst.add(lHashEingabe);
-		pTwitterSonst.add(txtHashEingabe);
-		pTwitterSonst.add(btTweetBild);
+		pTwitterTweet.add(pLeer,BorderLayout.NORTH);
+		pTwitterTweet.add(plhashlinks,BorderLayout.WEST);
+		pTwitterTweet.add(ptxtUBt,BorderLayout.CENTER);
+		pTwitterTweet.add(btTweetBild,BorderLayout.SOUTH);
 
 		
 		//OberesPanel
-		pButtonSteno.add(bHide, BorderLayout.WEST);
-		pButtonSteno.add(bExtract, BorderLayout.EAST);
-		pButton.add(pButtonSteno, BorderLayout.NORTH);
-		pButton.add(tfMessage, BorderLayout.SOUTH);
+		pButton.add(pLeer);
+		pButton.add(pbhide);
+		pButton.add(pbextract);
+		pButton.add(ptxtmessage);
+		
 		pBildIn.add(bBildInLaden);
 		pHide.add(pBildIn, BorderLayout.CENTER);
 		pExtract.add(bBildOutLaden);

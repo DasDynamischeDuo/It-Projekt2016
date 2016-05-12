@@ -72,6 +72,7 @@ public class TwitterLogin {
 	public String getTweetandMediafromHash(String hash, String user) {
 
 		String returnvalue = null;
+<<<<<<< HEAD
 		
 		try {
 			ResponseList<Status> timeline = twitter.getUserTimeline(twitter.showUser(user).getId());		
@@ -92,6 +93,48 @@ public class TwitterLogin {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+
+		/*
+		tf.getSingleton();
+		Query query = new Query(Hash);
+		QueryResult result = null;
+		try {
+			result = twitter.search(query);
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+		
+		*/
+		
+		try {
+			ResponseList<Status> timeline = twitter.getUserTimeline(twitter.showUser(user).getId());		
+			
+			for (Status status : timeline) {
+				for (HashtagEntity hashtags : status.getHashtagEntities()) {
+					if (hashtags.getText().equals(hash)) {
+						for (MediaEntity mediaEntity : status.getMediaEntities()) {
+							returnvalue = mediaEntity.getMediaURL();
+						}
+					}
+				}
+			}
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*
+		for (Status status : result.getTweets()) {
+			System.out.println(status.getUser());
+
+		}
+		
+		*/
+>>>>>>> branch 'Linux' of https://github.com/DasDynamischeDuo/It-Projekt2016.git
 	
 		return returnvalue;
 

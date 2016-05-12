@@ -34,6 +34,7 @@ import Twitter.TwitterLogin;
 public class Gui extends JFrame{
 
 	private boolean loginDatenGesetzt = false;
+	
 	private String TwitterUrl = "https://apps.twitter.com/";
 	
 	//VorschauStego
@@ -297,51 +298,44 @@ public class Gui extends JFrame{
 		
 		
 
-		String url = LoginData.class.getResource("").toString();
-		url = url.substring(5, url.length());
-		url = url.replace("Twitter/", "") + "LoginData/";
-
-		 File folder = new File(url);
-		 File[] listOfFiles = folder.listFiles();
-		 Vector<String> fileNames = new Vector<String>();
-
-		 for (int i = 0; i < listOfFiles.length; i++) {
-			 if (listOfFiles[i].isFile() && listOfFiles[i].getName().contains(".bin")) {
-				 fileNames.add(listOfFiles[i].getName().replace(".bin", ""));
-			 }
-		 }
 		
-		 
-		 String[] fileNamesArray = fileNames.toArray(new String[0]);
-		 
-		 
-		 String fileName = (String) JOptionPane.showInputDialog(null, "Choose now...",
-		        "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null, 
-		        fileNamesArray,
-		        fileNamesArray[0]);
-		    
-		 url = url +fileName +".bin";
-		 
-		
-		
-		try {
-			loginData = loginData.loadLoginData(url);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		twitterLogin.setLoginData(loginData);
+			String url = LoginData.class.getResource("").toString();
+			url = url.substring(5, url.length());
+			url = url.replace("Twitter/", "") + "LoginData/";
+			File folder = new File(url);
+			File[] listOfFiles = folder.listFiles();
+			Vector<String> fileNames = new Vector<String>();
+			for (int i = 0; i < listOfFiles.length; i++) {
+				if (listOfFiles[i].isFile() && listOfFiles[i].getName().contains(".bin")) {
+					fileNames.add(listOfFiles[i].getName().replace(".bin", ""));
+				}
+			}
+			String[] fileNamesArray = fileNames.toArray(new String[0]);
+			String fileName = (String) JOptionPane.showInputDialog(null, "Choose now...", "The Choice of a Lifetime",
+					JOptionPane.QUESTION_MESSAGE, null, fileNamesArray, fileNamesArray[0]);
+			url = url + fileName + ".bin";
+			try {
+				loginData = loginData.loadLoginData(url);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 
-		twitterLogin.reConfiguration();
-		loginDatenGesetzt = twitterLogin.checkLogin();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
+			twitterLogin.setLoginData(loginData);
+			twitterLogin.reConfiguration();
+			loginDatenGesetzt = twitterLogin.checkLogin();
+			
+		
+		
+		
 		
 		
 	}

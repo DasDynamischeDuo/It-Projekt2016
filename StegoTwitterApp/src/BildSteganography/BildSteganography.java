@@ -2,6 +2,7 @@ package BildSteganography;
 
 import javax.crypto.*;
 
+import java.awt.Color;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
@@ -10,8 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import javax.imageio.ImageIO;
 
 import Gui.Gui;
+import Gui.TexteDeutsch;
 
-public class BildSteganography {
+public class BildSteganography implements TexteDeutsch {
 
 	private Gui gui;
 	
@@ -57,22 +59,22 @@ public class BildSteganography {
 		int h = bufferedImage.getHeight();
 
 
-		if (w*h -16 <= text.length() * 8) {
-			gui.error("Text ist zu lang");
+		if (w*h -32 <= text.length() * 8) {
+			gui.error(TEXTZULANG);
 			return null;
 		}
 		
 		int stelle = 0;
-
-		int[] textBits = new int[text.length() + 8];
-		textBits = bitsInText(text);
-
+		
+		int[] textBits = bitsInText(text);
+		
+		
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
 				if (textBits.length <= stelle) {
 					break;
 				}
-
+				
 				bufferedImage.setRGB(j, i, setLastBit(bufferedImage.getRGB(j, i), textBits[stelle]));
 				stelle++;
 
@@ -102,14 +104,27 @@ public class BildSteganography {
 		int anzEinser = 0;
 		
 		
+		for (int i = 0; i < 8; i++) {
+			if (Integer.toBinaryString(bufferedImage.getRGB(i, 0)).charAt(31) == '1') {
+				anzEinser++;
+			}
+		}
+		
+		if (anzEinser != 8) {
+			gui.error(KEINENACHRICHT);
+			return null;
+		}
+		
+		anzEinser = 0;
+		
 		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < w; j++) {
+			for (int j = 8; j < w; j++) {
 				
-				if (anzEinser >= 16) {
+				if (anzEinser >= 8) {
 					break;
 				}
 
-				bits += Integer.toBinaryString(bufferedImage.getRGB(j, i)).charAt(31);							
+				bits += Integer.toBinaryString(bufferedImage.getRGB(j, i)).charAt(31);
 				
 				if (Integer.toBinaryString(bufferedImage.getRGB(j, i)).charAt(31) == '1') {
 					anzEinser++;
@@ -125,12 +140,10 @@ public class BildSteganography {
 		for (int i = 0; i < bits.length(); i++) {
 			textBits[i] = Integer.parseInt(bits.charAt(i) + "");
 		}
-
-		
 		
 		String text = bitsToText(textBits);
-
-		text = text.substring(0, text.length() - 3);
+		
+		text = text.substring(0, text.length() - 2);
 
 		return text;
 	}
@@ -147,12 +160,12 @@ public class BildSteganography {
 	
 	
 	public int setLastBit(int value, int bit) {
-
+		
 		if (value % 2 == 1 | value % 2 == -1) {
 			value--;
 		}
-
-		value = value + bit;
+		
+		value += bit;
 
 		return value;
 
@@ -169,13 +182,20 @@ public class BildSteganography {
 	
 	public int[] bitsInText(String text) {
 
+		
 		int[] bitsInText = new int[text.length() * 8 + 24];
 		String chr;
+		
+		
+		for (int i = 0; i < 8; i++) {
+			bitsInText[i] = 1;
+		}
+		
+
 		for (int i = 0; i < text.length(); i++) {
 			chr = Integer.toBinaryString((int) text.charAt(i));
-			
 			if (chr.length() > 8) {
-				gui.error("Der Text muss aus Asciizeichen bestehen");
+				gui.error(KEINEASCII);
 				return null;
 			}
 			
@@ -184,20 +204,19 @@ public class BildSteganography {
 			}
 			
 			for (int j = 0; j < 8; j++) {
-				bitsInText[(i * 8) + j] = Integer.parseInt(chr.charAt(j) + "");
+				bitsInText[(i * 8) + j + 8] = Integer.parseInt(chr.charAt(j) + "");
 			}
 		}
 		
 
-		for (int i = text.length() * 8; i < bitsInText.length - 14; i++) {
+		for (int i = bitsInText.length - 16; i < bitsInText.length - 8; i++) {
 			bitsInText[i] = 0;
 		}
 		
 		
-		for (int i = text.length() * 8 + 8; i < bitsInText.length; i++) {
+		for (int i = bitsInText.length - 8; i < bitsInText.length; i++) {
 			bitsInText[i] = 1;
 		}
-		
 		
 		return bitsInText;
 
@@ -224,7 +243,7 @@ public class BildSteganography {
 			chr = "";
 		}
 
-		return text;
+		return text.substring(0, text.length());
 
 	}
 

@@ -120,7 +120,7 @@ public class BildSteganography implements TexteDeutsch {
 		for (int i = 0; i < h; i++) {
 			for (int j = 8; j < w; j++) {
 				
-				if (anzEinser >= 8) {
+				if (anzEinser >= 16) {
 					break;
 				}
 
@@ -143,7 +143,7 @@ public class BildSteganography implements TexteDeutsch {
 		
 		String text = bitsToText(textBits);
 		
-		text = text.substring(0, text.length() - 2);
+		text = text.substring(0, text.length() - 3);
 
 		return text;
 	}
@@ -183,7 +183,7 @@ public class BildSteganography implements TexteDeutsch {
 	public int[] bitsInText(String text) {
 
 		
-		int[] bitsInText = new int[text.length() * 8 + 24];
+		int[] bitsInText = new int[text.length() * 8 + 32];
 		String chr;
 		
 		
@@ -209,12 +209,12 @@ public class BildSteganography implements TexteDeutsch {
 		}
 		
 
-		for (int i = bitsInText.length - 16; i < bitsInText.length - 8; i++) {
+		for (int i = bitsInText.length - 24; i < bitsInText.length - 8; i++) {
 			bitsInText[i] = 0;
 		}
 		
 		
-		for (int i = bitsInText.length - 8; i < bitsInText.length; i++) {
+		for (int i = bitsInText.length - 16; i < bitsInText.length; i++) {
 			bitsInText[i] = 1;
 		}
 		
